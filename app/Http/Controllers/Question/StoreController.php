@@ -10,9 +10,11 @@ class StoreController extends Controller
 {
     public function store(Request $request): RedirectResponse
     {
-        $attributes = $request->validate([
-            'question' => ['required', 'string', 'min:10', 'ends_with:?'],
-        ]);
+        $attributes = $request->validate(
+            [
+                'question' => ['required', 'string', 'min:10', 'ends_with:?'],
+            ],
+        );
 
         Question::query()->create(
             [

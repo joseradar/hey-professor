@@ -30,4 +30,18 @@ it('should check if ends with a question mark', function () {
 });
 
 it('should have at least 10 characters', function () {
+
+    // Arrange : prepare the data
+    $user = User::factory()->create();
+    actingAs($user);
+
+    // Act  : Create a new question with less than 10 characters
+    $request = post(route('question.store'), [
+        'question' => 'a?',
+        'test'     => 'test',
+    ]);
+
+    // Assert : Expect an exception
+
+    $request->assertSessionHasErrors(['question' => __('validation.min.string', ['attribute' => 'question', 'min' => 10])]);
 });
