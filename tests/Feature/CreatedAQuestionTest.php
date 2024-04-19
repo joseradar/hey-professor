@@ -27,6 +27,22 @@ it('should be able to create a new question bigger than 255 characters', functio
 });
 
 it('should check if ends with a question mark', function () {
+
+    // Arrange : prepare the data
+    $user = User::factory()->create();
+    actingAs($user);
+
+    // Act  : Create a new question without a question mark
+    $request = post(route('question.store'), [
+        'question' => str_repeat('a', 10),
+    ]);
+
+    // Assert : Expect an exception
+    $request->assertSessionHasErrors(
+        [
+            'question' => __('validation.ends_with', ['attribute' => 'question', 'values' => '?']),
+        ]
+    );
 });
 
 it('should have at least 10 characters', function () {
@@ -38,10 +54,13 @@ it('should have at least 10 characters', function () {
     // Act  : Create a new question with less than 10 characters
     $request = post(route('question.store'), [
         'question' => 'a?',
-        'test'     => 'test',
     ]);
 
     // Assert : Expect an exception
 
-    $request->assertSessionHasErrors(['question' => __('validation.min.string', ['attribute' => 'question', 'min' => 10])]);
+    $request->assertSessionHasErrors(
+        [
+            'question' => __('validation.min.string', ['attribute' => 'question', 'min' => 10]),
+        ]
+    );
 });
