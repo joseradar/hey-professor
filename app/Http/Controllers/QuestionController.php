@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Question;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Question;
 use Illuminate\Http\{RedirectResponse, Request};
 
-class StoreController extends Controller
+class QuestionController extends Controller
 {
     public function store(Request $request): RedirectResponse
     {
