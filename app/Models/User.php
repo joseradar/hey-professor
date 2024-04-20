@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -44,5 +45,24 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
         ];
+    }
+
+    /**
+     * Get the questions for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Question>
+     */
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class);
+    }
+    /**
+     * Get the votes for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Vote>
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
     }
 }

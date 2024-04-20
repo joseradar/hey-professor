@@ -23,4 +23,17 @@ class QuestionController extends Controller
 
         return redirect()->route('dashboard');
     }
+
+    public function like(Question $question): RedirectResponse
+    {
+        $question->votes()->create(
+            [
+                'user_id' => auth()->id(),
+                'like'    => 1,
+                'unlike'  => 0,
+            ]
+        );
+
+        return back();
+    }
 }
