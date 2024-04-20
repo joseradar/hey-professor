@@ -13,7 +13,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    <link rel="stylesheet" href="{{ asset('build/assets/app-pFF5YMnY.css') }}" />
+    <link rel="stylesheet" href="{{ asset('build/assets/app-B6Q-5Ant.css') }}" />
     <script>
         // On page load or when changing themes, best to add inline in `head` to avoid FOUC
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(

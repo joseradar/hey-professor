@@ -16,12 +16,25 @@
                 </x-textarea>
             </div>
             <x-btn.primary type="submit">
-                Ask
+                Save
             </x-btn.primary>
             <x-btn.secondary type="reset">
                 Cancel
             </x-btn.secondary>
 
         </x-form>
+
+        <hr class="mt-4 border-gray-700">
+
+        <div class="mt-4">
+            <h1 class="text-xl font-bold dark:text-gray-400 uppercase mb-1">List of Questions</h1>
+        </div>
+
+        <div class="flex flex-col space-y-4">
+            @foreach ($questions as $item)
+                <x-question :question="$item->question" />
+            @endforeach
+        </div>
     </x-container>
+
 </x-app-layout>
