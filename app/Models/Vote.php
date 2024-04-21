@@ -15,7 +15,7 @@ class Vote extends Model
     /**
      * Get the user that owns the vote.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, Vote>
+     * @return BelongsTo<User, Vote>
      */
     public function user(): BelongsTo
     {
@@ -25,7 +25,7 @@ class Vote extends Model
     /**
      * Get the question associated with the vote.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Question, Vote>
+     * @return BelongsTo<Question, Vote>
      */
     public function question(): BelongsTo
     {

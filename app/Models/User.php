@@ -50,19 +50,39 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the questions for the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Question>
+     * @return HasMany<Question>
      */
     public function questions(): HasMany
     {
         return $this->hasMany(Question::class);
     }
+
     /**
      * Get the votes for the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Vote>
+     * @return HasMany<Vote>
      */
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
+    }
+
+    /**
+     * Like the given question.
+     *
+     * @param Question $question
+     * @return void
+     */
+    public function like($question): void
+    {
+        $this->votes()->updateOrCreate(
+            [
+                'question_id' => $question->id,
+            ],
+            [
+                'like'   => true,
+                'unlike' => false,
+            ]
+        );
     }
 }
