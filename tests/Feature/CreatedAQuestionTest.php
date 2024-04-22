@@ -63,3 +63,21 @@ it('should have at least 10 characters', function () {
         ]
     );
 });
+
+it('should create a draft all the time', function () {
+    // Arrange : prepare the data
+    $user = User::factory()->create();
+    actingAs($user);
+
+    // Act  : Create a new question
+    $request = post(route('question.store'), [
+        'question' => str_repeat('a', 10) . '?',
+    ]);
+
+    // Assert : Expect an exception
+    assertDatabaseHas('questions', [
+        'question' => str_repeat('a', 10) . '?',
+        'draft'    => true,
+    ]);
+
+});

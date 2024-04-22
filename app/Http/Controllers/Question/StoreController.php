@@ -19,6 +19,7 @@ class StoreController extends Controller
         Question::create(
             [
                 'question' => $attributes['question'],
+                'draft'    => true,
             ]
         );
 
