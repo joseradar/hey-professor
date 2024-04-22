@@ -38,6 +38,23 @@ class QuestionController extends Controller
         return view('question.edit', ['question' => $question]);
     }
 
+    public function update(Request $request, Question $question): RedirectResponse
+    {
+        $this->authorize('update', $question);
+
+        $attributes = $request->validate(
+            [
+                'question' => ['required', 'string', 'min:10', 'ends_with:?'],
+            ]
+        );
+
+        $question->update([
+            'question' => $attributes['question'],
+        ]);
+
+        return back();
+    }
+
     public function destroy(Question $question): RedirectResponse
     {
         user()->can('delete', $question)
