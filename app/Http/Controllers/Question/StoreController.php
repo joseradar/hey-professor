@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Question;
 
+use App\Http\Controllers\Controller;
 use App\Models\Question;
 use Illuminate\Http\{RedirectResponse, Request};
 
-class QuestionController extends Controller
+class StoreController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function __invoke(Request $request): RedirectResponse
     {
         $attributes = $request->validate(
             [
@@ -15,7 +16,7 @@ class QuestionController extends Controller
             ]
         );
 
-        Question::query()->create(
+        Question::create(
             [
                 'question' => $attributes['question'],
             ]
