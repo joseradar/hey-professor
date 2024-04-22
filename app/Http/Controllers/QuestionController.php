@@ -33,7 +33,9 @@ class QuestionController extends Controller
 
     public function edit(Question $question): View
     {
-        return view('question.edit', compact('question'));
+        $this->authorize('update', $question);
+
+        return view('question.edit', ['question' => $question]);
     }
 
     public function destroy(Question $question): RedirectResponse
@@ -44,4 +46,5 @@ class QuestionController extends Controller
 
         return back();
     }
+
 }
