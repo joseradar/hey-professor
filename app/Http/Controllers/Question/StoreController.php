@@ -21,6 +21,6 @@ class StoreController extends Controller
 
         ]);
 
-        return redirect()->route('dashboard');
+        return back();
     }
 }

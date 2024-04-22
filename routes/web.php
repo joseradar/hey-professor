@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
 
     //region Question Routes
     Route::prefix('question')->name('question.')->group(function () {
+        Route::get('/', Question\IndexController::class)->name('index');
         Route::post('/store', Question\StoreController::class)->name('store');
         Route::post('/like/{question}', Question\LikeController::class)->name('like');
         Route::post('/unlike/{question}', Question\UnlikeController::class)->name('unlike');
