@@ -7,8 +7,7 @@
     </span>
     <div>
         <x-form post :action="route('question.like', $question)">
-            <button type="submit" href="{{ route('question.like', $question) }}"
-                    class="flex items-center space-x-2 text-green-500 cursor-pointer">
+            <button type="submit" class="flex items-center space-x-2 text-green-500 cursor-pointer">
                 <x-icons.thumbs-up class=" w-5 h-5 hover:text-green-300 " id="thumbs-up"/>
                 <span>
                     {{ $question->votes->where('like', 1)->count()}}
@@ -16,9 +15,8 @@
 
             </button>
         </x-form>
-        <x-form :action="route('question.like', $question)">
-            <button type="submit" href="{{ route('question.like', $question) }}"
-                    class="flex items-center space-x-2 text-red-500 cursor-pointer">
+        <x-form :action="route('question.unlike', $question)">
+            <button type="submit" class="flex items-center space-x-2 text-red-500 cursor-pointer">
                 <x-icons.thumbs-down class="w-5 h-5 hover:text-red-300 " id="thumbs-down"/>
                 <span>
                 {{ $question->votes->where('unlike', 1)->count()}}
