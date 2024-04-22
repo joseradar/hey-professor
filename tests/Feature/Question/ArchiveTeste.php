@@ -17,7 +17,7 @@ it('should be able to archive a question', function () {
     expect($question->deleted_at)->not->toBeNull();
 });
 
-it('should make sure that only user the person who created the quesquestion.archive it', function () {
+it('should make sure that only user the person who created the question archive it', function () {
 
     $rigthUser = User::factory()->create();
     actingAs($rigthUser);
