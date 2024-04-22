@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/like/{question}', Question\LikeController::class)->name('like');
         Route::post('/unlike/{question}', Question\UnlikeController::class)->name('unlike');
         Route::put('/publish/{question}', Question\PublishController::class)->name('publish');
+        Route::delete('/delete/{question}', Question\DestroyController::class)->name('destroy');
     });
     //endregion
 
