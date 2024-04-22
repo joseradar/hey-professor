@@ -54,10 +54,19 @@ class QuestionController extends Controller
         return redirect()->route('question.index');
     }
 
+    public function archive(Question $question): RedirectResponse
+    {
+        $this->authorize('archive', $question);
+
+        $question->delete();
+
+        return back();
+    }
+
     public function destroy(Question $question): RedirectResponse
     {
         user()->can('delete', $question)
-            ? $question->delete()
+            ? $question->forceDelete()
             : abort(Response::HTTP_FORBIDDEN);
 
         return back();
