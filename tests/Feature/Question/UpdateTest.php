@@ -14,7 +14,7 @@ it('should be able to update a question', function () {
         [
             'question' => 'This is a new question?',
         ]
-    )->assertRedirect();
+    )->assertRedirect(route('question.index'));
 
     $question->refresh();
 
