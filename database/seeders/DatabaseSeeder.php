@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\{Question, User};
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +21,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'jose@sfalsim.com.br',
         ]);
 
-        Question::factory()->count(10)->create();
+        Question::factory()->count(50)->create();
     }
 }
