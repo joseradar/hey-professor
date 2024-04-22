@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{DashboardController, ProfileController, Question};
+use App\Http\Controllers\{DashboardController, ProfileController, Question, QuestionController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,12 +19,15 @@ Route::middleware('auth')->group(function () {
 
     //region Question Routes
     Route::prefix('question')->name('question.')->group(function () {
-        Route::get('/', Question\IndexController::class)->name('index');
-        Route::post('/store', Question\StoreController::class)->name('store');
+        Route::get('/', [QuestionController::class, 'index'])->name('index');
+        Route::post('/store', [QuestionController::class, 'store'])->name('store');
+        Route::delete('/delete/{question}', [QuestionController::class, 'destroy'])->name('destroy');
+        Route::get('/{question}/edit', [QuestionController::class, 'edit'])->name('edit');
+        Route::put('/{question}', [QuestionController::class, 'update'])->name('update');
         Route::post('/like/{question}', Question\LikeController::class)->name('like');
         Route::post('/unlike/{question}', Question\UnlikeController::class)->name('unlike');
         Route::put('/publish/{question}', Question\PublishController::class)->name('publish');
-        Route::delete('/delete/{question}', Question\DestroyController::class)->name('destroy');
+
     });
     //endregion
 
