@@ -2,7 +2,7 @@
 
 use App\Models\{Question, User};
 
-use function Pest\Laravel\{actingAs, put};
+use function Pest\Laravel\{actingAs, assertDatabaseCount, assertDatabaseHas, put};
 
 it('should be able to update a question', function () {
     $user = User::factory()->create();
@@ -62,4 +62,65 @@ it('should make sure that only user the person who created the question can upda
         ]
     )->assertRedirect();
 
+});
+
+it('should be able to update a question bigger than 255 characters', function () {
+    $user     = User::factory()->create();
+    $question = Question::factory()->create(['created_by' => $user->id, 'draft' => true]);
+
+    actingAs($user);
+
+    $request = put(route('question.update', $question), [
+        'question' => str_repeat('a', 260) . '?',
+    ])->assertRedirect();
+
+    assertDatabaseCount('questions', 1);
+    assertDatabaseHas('questions', [
+        'question' => str_repeat('a', 260) . '?',
+    ]);
+});
+
+it('should check if ends with a question mark', function () {
+
+    $user     = User::factory()->create();
+    $question = Question::factory()->create(['created_by' => $user->id, 'draft' => true]);
+
+    actingAs($user);
+
+    $request = put(route('question.update', $question), [
+        'question' => str_repeat('a', 10),
+    ]);
+
+    // Assert : Expect an exception
+    $request->assertSessionHasErrors(
+        [
+            'question' => __('validation.ends_with', ['attribute' => 'question', 'values' => '?']),
+        ]
+    );
+    assertDatabaseHas('questions', [
+        'question' => $question->question,
+    ]);
+    assertDatabaseCount('questions', 1);
+});
+
+it('should have at least 10 characters', function () {
+
+    $user     = User::factory()->create();
+    $question = Question::factory()->create(['created_by' => $user->id, 'draft' => true]);
+
+    actingAs($user);
+
+    $request = put(route('question.update', $question), [
+        'question' => 'a?',
+    ]);
+
+    $request->assertSessionHasErrors(
+        [
+            'question' => __('validation.min.string', ['attribute' => 'question', 'min' => 10]),
+        ]
+    );
+    assertDatabaseHas('questions', [
+        'question' => $question->question,
+    ]);
+    assertDatabaseCount('questions', 1);
 });

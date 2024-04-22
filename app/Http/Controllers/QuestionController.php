@@ -42,8 +42,13 @@ class QuestionController extends Controller
     {
         $this->authorize('update', $question);
 
+        $attributes = request()->validate(
+            [
+                'question' => ['required', 'string', 'min:10', 'ends_with:?'],
+            ]
+        );
         $question->update([
-            'question' => request('question'),
+            'question' => $attributes['question'],
         ]);
 
         return back();
