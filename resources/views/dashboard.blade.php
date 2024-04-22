@@ -32,7 +32,7 @@
 
         <div class="flex flex-col space-y-4">
             @foreach ($questions as $item)
-                <x-question :question="$item->question" />
+                <x-question :question="$item"/>
             @endforeach
         </div>
     </x-container>
