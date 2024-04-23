@@ -21,10 +21,9 @@ class QuestionController extends Controller
     {
         $attributes = $request->validate(
             [
-                'question' => ['required', 'string', 'min:10', 'ends_with:?'],
+                'question' => ['required', 'string', 'min:10', 'ends_with:?', 'unique:questions,question'],
             ]
         );
-
         user()->questions()->create([
             'question' => $attributes['question'],
             'draft'    => true,
