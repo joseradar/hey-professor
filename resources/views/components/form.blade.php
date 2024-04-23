@@ -1,4 +1,4 @@
-@props(['action', 'post' => null, 'put' => null, 'delete' => null, 'patch' => null])
+@props(['action', 'post' => null, 'put' => null, 'delete' => null, 'patch' => null, 'get' => null])
 
 
 <form action="{{ $action }}" method="POST" {{ $attributes }}>
@@ -11,6 +11,9 @@
     @endif
     @if ($delete)
         @method('DELETE')
+    @endif
+    @if($get)
+        @method('GET')
     @endif
     {{ $slot }}
 </form>
