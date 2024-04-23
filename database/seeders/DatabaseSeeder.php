@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\{Question, User};
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,10 +17,10 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name'  => 'José Neto',
-            'email' => 'jose@sfalsim.com.br',
+            'name'  => 'Jowsef',
+            'email' => 'jose@teste.com',
         ]);
 
-        Question::factory()->count(10)->create();
+        Question::factory()->count(50)->create(['created_by' => 1]);
     }
 }

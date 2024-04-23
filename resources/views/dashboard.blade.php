@@ -3,25 +3,36 @@
 
         <x-header>
 
-            {{ __('Dashboard') }}
+            {{ __('Vote for a question') }}
         </x-header>
 
     </x-slot>
 
     <x-container>
-        <x-form post :action="route('question.store')">
-            <div class="mb-4">
-                <x-textarea name="question" label="Question" placeholder="Ask me anything...">
+        <div class="flex flex-col space-y-4">
 
-                </x-textarea>
-            </div>
-            <x-btn.primary type="submit">
-                Ask
-            </x-btn.primary>
-            <x-btn.secondary type="reset">
-                Cancel
-            </x-btn.secondary>
+            <x-form :action="route('dashboard')" get>
+                <x-inputs.search autocomplete="off"/>
+            </x-form>
 
-        </x-form>
+            @if($questions->isEmpty())
+                <div class="dark:text-gray-300 text-center flex flex-col justify-center">
+                    <p class="text-2xl font-bold mb-8 mt-5">No questions found</p>
+                    <div class="flex justify-center">
+                        <x-draws.searching width="350"/>
+                    </div>
+
+
+                </div>
+            @else
+
+                @foreach ($questions as $item)
+                    <x-question :question="$item"/>
+                @endforeach
+
+                {{$questions->withQueryString()->links()}}
+            @endif
+        </div>
     </x-container>
+
 </x-app-layout>
