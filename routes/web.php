@@ -25,6 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/delete/{question}', [QuestionController::class, 'destroy'])->name('destroy');
         Route::get('/{question}/edit', [QuestionController::class, 'edit'])->name('edit');
         Route::put('/{question}', [QuestionController::class, 'update'])->name('update');
+        Route::patch('/archrive/{question}', [QuestionController::class, 'archive'])->name('archive');
+        Route::patch('/restore/{question}', [QuestionController::class, 'restore'])->name('restore');
         Route::post('/like/{question}', Question\LikeController::class)->name('like');
         Route::post('/unlike/{question}', Question\UnlikeController::class)->name('unlike');
         Route::put('/publish/{question}', Question\PublishController::class)->name('publish');
