@@ -1,21 +1,19 @@
-name: Continuous Integration
-
+name: TEST-CI-CD
 on:
-  pull_request:
-    branches: [ "develop", "main" ]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   laravel-tests:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
       with:
         php-version: '8.2'
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - name: Criar .Env
+      run: echo "${{ secrets.PROJECT_ENV }}" > .env
     - name: Install Dependencies
       run: composer install --no-ansi --no-interaction --no-progress --prefer-dist
     - name: Generate key
@@ -37,5 +35,28 @@ jobs:
       run: php artisan test --parallel
     - name: Execute Larastan
       run: ./vendor/bin/phpstan analyse
-    - name: Execute Laravel Pint 
+    - name: Execute Laravel Pint
       run: ./vendor/bin/pint --test
+  CI:
+    needs: [laravel-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter código
+        uses: actions/checkout@v4.1.3
+      - name: Criar .Env
+        run: echo "${{ secrets.PROJECT_ENV }}" > .env
+      - name: Autenticação no Docker
+        uses: docker/login-action@v3.1.0
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5.3.0
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            sfalsim/hey-professor:${{ github.run_number }}
+            sfalsim/hey-professor:latest
+
