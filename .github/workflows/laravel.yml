@@ -60,3 +60,21 @@ jobs:
             sfalsim/hey-professor:${{ github.run_number }}
             sfalsim/hey-professor:latest
 
+  CD:
+    needs: [CI]
+    runs-on: self-hosted
+    steps:
+      - name: Verifica se há container existente com o nome "hey-professor"
+        run: docker ps -a | grep hey-professor
+      - name: Para container existente
+        run: docker stop hey-professor || true
+      - name: Remove container existente
+        run: docker rm -f hey-professor || true
+      - name: Remove imagem existente
+        run: docker rmi -f sfalsim/hey-professor:latest || true
+      - name: Cria arquivo docker-compose.yaml
+        run: echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yaml
+      - name: Executa o docker compose
+        run: docker-compose up -d
+      - name: Verifica se o container está rodando
+        run: docker ps | grep hey-professor
