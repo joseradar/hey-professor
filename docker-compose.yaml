@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  hey-professor:
+    image: sfalsim/hey-professor:latest
+    container_name: hey-professor
+    networks:
+      - traefik_public
+    ports:
+      - "8001:80"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Method('GET')
+      - traefik.docker.network=traefik_public
+      - traefik.http.routers.hey-professor.rule=Host('hey-professor.paineldesenhas.com.br')
+      - traefik.http.routers.hey-professor.entrypoints=websecure
+      - traefik.http.routers.hey-professor.service=hey-professor
+      - traefik.http.routers.hey-professor.tls.certresolver=leresolver
+      - traefik.http.services.hey-professor.loadbalancer.server.port=80
+
+networks:
+  traefik_public:
+    external: true
