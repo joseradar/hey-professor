@@ -64,16 +64,34 @@ jobs:
     needs: [CI]
     runs-on: self-hosted
     steps:
-      - name: Verifica se há container existente com o nome "hey-professor"
-        run: docker ps -a | grep hey-professor
-      - name: Para container existente
-        run: docker stop hey-professor || true
-      - name: Remove container existente
-        run: docker rm -f hey-professor || true
-      - name: Remove imagem existente
-        run: docker rmi -f sfalsim/hey-professor:latest || true
-      - name: Cria arquivo docker-compose.yaml
-        run: echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yaml
+       - name: Verifica se há container existente com o nome "hey-professor"
+         id: check_container
+          run: |
+            if docker ps -a | grep -q hey-professor; then
+              echo "::set-output name=exists::true"
+            else
+              echo "::set-output name=exists::false"
+            fi
+        - name: Para e remove o container existente, se necessário
+          if: steps.check_container.outputs.exists == 'true'
+          run: |
+            docker stop hey-professor
+            docker rm hey-professor
+        - name: Remove a imagem existente
+          if: steps.check_container.outputs.exists == 'true'
+          run: docker rmi sfalsim/hey-professor:latest
+        - name: Obter código
+          uses: actions/checkout@v4.1.3
+        - name: Executa o docker compose
+          run: docker-compose up -d
+        - name: Verifica se o container está rodando
+          run: |
+            if ! docker ps | grep -q hey-professor; then
+              echo "Container hey-professor não está rodando."
+              exit 1
+            fi
+      - name: Obter código
+        uses: actions/checkout@v4.1.3
       - name: Executa o docker compose
         run: docker-compose up -d
       - name: Verifica se o container está rodando
